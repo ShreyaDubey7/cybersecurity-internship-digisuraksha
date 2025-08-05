@@ -43,7 +43,7 @@ def detect_homoglyphs_verbose(file_path):
             line = line.strip()
             reasons = get_homoglyph_reasons(line)
             if reasons:
-                print(f"Line {lineno}: {line} is homoglyph")
+                print(f"Line {lineno}: {line} is suspicious")
                 for char, mimic, pos in reasons:
                     print(f"  -> Character '{char}' at position {pos} mimics '{mimic}'")
 
