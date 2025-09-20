@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; max-width: 800px; margin: 24px auto; padding: 0 12px; }
+nav { margin-bottom: 16px }
+label { display:block; margin:8px 0 }
+.flashes { background:#ffe; border:1px solid #cc9; padding:8px; }
+#strength { margin-top:8px }

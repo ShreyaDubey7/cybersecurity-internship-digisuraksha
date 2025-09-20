@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Register</h2>
+<form method="post" id="registerForm">
+  <label>Username: <input name="username" required></label>
+  <label>Password: <input type="password" name="password" id="password" required></label>
+  <div id="strength">
+    Strength: <span id="strengthLabel">Too short</span>
+    <ul id="hints"></ul>
+  </div>
+  <button type="submit">Register</button>
+</form>
+
+<script>
+const password = document.getElementById('password');
+const strengthLabel = document.getElementById('strengthLabel');
+const hints = document.getElementById('hints');
+const form = document.getElementById('registerForm');
+
+function checkPassword(p) {
+  const results = {
+    length: p.length >= 8,
+    upper: /[A-Z]/.test(p),
+    lower: /[a-z]/.test(p),
+    digit: /\d/.test(p),
+    symbol: /[!@#$%^&*(),.?":{}|<>[\];'`~_+=/-]/.test(p),
+    common: !["password","123456","qwerty"].includes(p.toLowerCase())
+  };
+
+  let score = 0;
+  if (results.length) score++;
+  if (results.upper) score++;
+  if (results.lower) score++;
+  if (results.digit) score++;
+  if (results.symbol) score++;
+  if (results.common) score++;
+
+  let label = "Weak";
+  if (score >= 5) label = "Strong";
+  else if (score >= 3) label = "Medium";
+
+  return { score, results, label };
+}
+
+password.addEventListener('input', () => {
+  const { results, label } = checkPassword(password.value);
+
+  strengthLabel.textContent = label;
+  hints.innerHTML = "";
+
+  if (!results.length) hints.innerHTML += "<li>At least 8 characters</li>";
+  if (!results.upper) hints.innerHTML += "<li>Add an uppercase letter</li>";
+  if (!results.lower) hints.innerHTML += "<li>Add a lowercase letter</li>";
+  if (!results.digit) hints.innerHTML += "<li>Add a number</li>";
+  if (!results.symbol) hints.innerHTML += "<li>Add a special character</li>";
+  if (!results.common) hints.innerHTML += "<li>Avoid common passwords</li>";
+});
+
+form.addEventListener('submit', (e) => {
+  const { score } = checkPassword(password.value);
+  if (score < 4) {  // Require at least Medium
+    e.preventDefault();
+    alert("Password too weak. Please make it stronger.");
+  }
+});
+</script>
+{% endblock %}
+

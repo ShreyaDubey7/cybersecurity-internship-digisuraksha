@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Welcome</h2>
+{% if session.user %}
+  <p>Hello, {{ session.user }} — <a href="/logout">Logout</a></p>
+
+{% endif %}
+{% endblock %}
+
